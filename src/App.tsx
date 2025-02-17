@@ -8,8 +8,7 @@ export const App: React.FC = () => {
     );
 };
 
-const API_KEY = '';
-
+const API_KEY = process.env.API_KEY ?? '';
 
 const params = new URLSearchParams();
 params.set('q', 'air');
