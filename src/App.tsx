@@ -1,9 +1,13 @@
 import React from 'react';
+import {Search} from './Search';
 
 export const App: React.FC = () => {
+
     return (
         <>
-            Hello
+            <Search onSearch={(value) => {
+                alert(value);
+            }} />
         </>
     );
 };
