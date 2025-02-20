@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Search} from './Search';
 import {Cat} from './Cat';
 import {Context} from './context';
+import {CategoryState} from './CategoryState';
 
 type CatResponse = Array<{
     id: string
@@ -57,28 +58,31 @@ export const App: React.FC = () => {
             setIsLoading(false);
         });
     }, [ search ]);
+
     return (
-        <Context.Provider value={{
-            hint: search,
-            fn: () => {
-                alert('hello');
-            }
-        }}>
-            <Search onSearch={(asd) => {
-                setSearch(asd);
-            }} />
-            <p>Searching for: {search}</p>
-            <p>
-                {catsData.length === 0 ? 'No results' : ''}
-                {isLoading ? 'Loading...' : ''}
-                {error}
-            </p>
-            <ul>
-                {catsData.map(cat => {
-                     return <Cat key={cat.name} name={cat.name} />;
-                })}
-            </ul>
-        </Context.Provider>
+        <CategoryState>
+            <Context.Provider value={{
+                hint: search,
+                fn: () => {
+                    // alert('hello');
+                }
+            }}>
+                <Search onSearch={(asd) => {
+                    setSearch(asd);
+                }} />
+                <p>Searching for: {search}</p>
+                <p>
+                    {catsData.length === 0 ? 'No results' : ''}
+                    {isLoading ? 'Loading...' : ''}
+                    {error}
+                </p>
+                <ul>
+                    {catsData.map(cat => {
+                         return <Cat key={cat.name} name={cat.name} />;
+                    })}
+                </ul>
+            </Context.Provider>
+        </CategoryState>
 
     );
 };
