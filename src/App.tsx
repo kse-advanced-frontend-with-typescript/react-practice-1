@@ -23,6 +23,9 @@ type CatResponse = Array<{
 export const App: React.FC = () => {
     const [search, setSearch] = React.useState('');
     const [catsData, setCatsData] = React.useState<CatResponse>([]);
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
     useEffect(() => {
         if (!search) return;
 
@@ -38,14 +41,20 @@ export const App: React.FC = () => {
                 'x-api-key': API_KEY
             })
         };
-
+        setIsLoading(true);
         fetch(link, options)
             .then(response => {
                 return response.json() as Promise<CatResponse>;
             })
             .then(data => {
                 setCatsData(data);
-            });
+            })
+            .catch(error => {
+                setError(error.message);
+            })
+            .finally(() => {
+            setIsLoading(false);
+        });
     }, [ search ]);
     return (
         <>
@@ -53,6 +62,11 @@ export const App: React.FC = () => {
                 setSearch(asd);
             }} />
             <p>Searching for: {search}</p>
+            <p>
+                {catsData.length === 0 ? 'No results' : ''}
+                {isLoading ? 'Loading...' : ''}
+                {error}
+            </p>
             <ul>
                 {catsData.map(cat => {
                      return <Cat key={cat.name} name={cat.name} />;
