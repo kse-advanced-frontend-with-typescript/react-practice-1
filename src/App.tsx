@@ -1,9 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {Search} from './Search';
+import {Cat} from './Cat';
+
+type CatResponse = Array<{
+    id: string
+    name: string
+    image: {
+        url: string
+        id: string
+    }
+    life_span: string
+    wikipedia_url: string
+    adaptability: number
+    alt_names: string
+    description: string
+    dog_friendly: string
+    energy_level: string
+    grooming: number
+    health_issues: number
+}>
 
 export const App: React.FC = () => {
     const [search, setSearch] = React.useState('');
-
+    const [catsData, setCatsData] = React.useState<CatResponse>([]);
     useEffect(() => {
         if (!search) return;
 
@@ -20,7 +39,13 @@ export const App: React.FC = () => {
             })
         };
 
-        fetch(link, options).then(console.log);
+        fetch(link, options)
+            .then(response => {
+                return response.json() as Promise<CatResponse>;
+            })
+            .then(data => {
+                setCatsData(data);
+            });
     }, [ search ]);
     return (
         <>
@@ -28,6 +53,11 @@ export const App: React.FC = () => {
                 setSearch(asd);
             }} />
             <p>Searching for: {search}</p>
+            <ul>
+                {catsData.map(cat => {
+                     return <Cat key={cat.name} name={cat.name} />;
+                })}
+            </ul>
         </>
     );
 };

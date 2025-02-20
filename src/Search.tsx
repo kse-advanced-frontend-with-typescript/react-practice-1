@@ -5,7 +5,6 @@ type SearchProps = {
 }
 
 export const Search: React.FC<SearchProps>  = ({ onSearch }) => {
-    const ttt = useRef<string>('');
     const input = useRef<HTMLInputElement>(null);
     const onSubmit: React.FormEventHandler = (event) => {
         event.preventDefault();
@@ -13,7 +12,6 @@ export const Search: React.FC<SearchProps>  = ({ onSearch }) => {
         onSearch(input?.current?.value ?? '');
     };
 
-    ttt.current = input?.current?.value ?? '';
 
     return <form onSubmit={onSubmit}>
         <input ref={input} type="text"/>
