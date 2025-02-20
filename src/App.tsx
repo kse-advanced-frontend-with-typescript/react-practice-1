@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Search} from './Search';
 import {Cat} from './Cat';
+import {Context} from './context';
 
 type CatResponse = Array<{
     id: string
@@ -57,7 +58,12 @@ export const App: React.FC = () => {
         });
     }, [ search ]);
     return (
-        <>
+        <Context.Provider value={{
+            hint: search,
+            fn: () => {
+                alert('hello');
+            }
+        }}>
             <Search onSearch={(asd) => {
                 setSearch(asd);
             }} />
@@ -72,7 +78,8 @@ export const App: React.FC = () => {
                      return <Cat key={cat.name} name={cat.name} />;
                 })}
             </ul>
-        </>
+        </Context.Provider>
+
     );
 };
 
